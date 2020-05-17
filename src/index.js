@@ -52,7 +52,8 @@ class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      descending: true
     }
   }
 
@@ -84,6 +85,12 @@ class Game extends React.Component {
     })
   }
 
+  switchOrder() {
+    this.setState({
+      descending: !this.state.descending
+    })
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -108,6 +115,12 @@ class Game extends React.Component {
       return button
     })
 
+    if (!this.state.descending) {
+      moves.sort((a, b) => {
+        return b.key - a.key
+      })
+    }
+
     let status
     if (winner) {
       status = 'Winner: ' + winner
@@ -127,6 +140,9 @@ class Game extends React.Component {
           <div>
             {status}
           </div>
+          <button onClick={() => this.switchOrder()}>
+            Switch sort order
+          </button>
           <ol>
             {moves}
           </ol>
